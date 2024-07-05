@@ -1,0 +1,2 @@
+# GeminiChat
+Projects with django
