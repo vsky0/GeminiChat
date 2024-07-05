@@ -1,2 +1,2 @@
 # GeminiChat
-Projects with django
+Chat with gemini
