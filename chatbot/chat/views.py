@@ -34,7 +34,7 @@ model = genai.GenerativeModel('gemini-1.5-flash')
 
 # Markdown response
 def to_markdown(text):
-    text = text.replace('.', '  *')
+    text = text.replace('•', '  *')
     return markdown.markdown(textwrap.indent(text, '> ', predicate=lambda _: True))
 
 # Ask gemini
