@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+
+from django.contrib import auth
+from django.contrib.auth.models import User
 
 # for google generativeai
 import pathlib
@@ -40,3 +43,47 @@ def chat(request):
         response = ask_gemini(message)
         return JsonResponse({'message':message, 'response':response})
     return render(request, 'chat.html')
+
+# login
+def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(request, username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('chat')
+        else:
+            error_msg = 'Invaild Username or Password'
+            return render(request, 'login.html', {'error_msg':error_msg})
+    else:
+        return render(request, 'login.html')
+
+# logout
+def logout(request):
+    auth.logout(request)
+    return redirect('login')
+
+# register
+def register(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+
+        if password1 == password2:
+            try:
+                user = User.objects.create_user(username, email, password1)
+                user.save()
+                auth.login(request, user)
+                return redirect('chat')
+            except:
+                error_msg = 'Error Creating Account'
+                return render(request, 'register.html', {'error_msg':error_msg})
+        else:
+            error_msg = 'Passwords do not match'
+            return render(request, 'register.html', {'error_msg':error_msg})
+        
+    return render(request, 'register.html')
