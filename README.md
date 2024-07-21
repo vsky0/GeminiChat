@@ -1,4 +1,4 @@
-# Gemini Clone: A Django Web App
+# Gemini Chat: A Django Web App
 
 This project builds a web application similar to the interface you use to interact with large language models (LLMs) like me, Gemini. It utilizes Django, the Gemini API, HTML, and CSS.
 
